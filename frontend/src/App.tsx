@@ -7,9 +7,9 @@ import { Home } from "@/pages";
 
 export default function App() {
   return (
-    <div>
+    <div className="overflow-hidden">
       <Navbar />
-      <div className="px-4 sm:px-14 mx-auto max-w-screen-xl">
+      <div className="mx-auto max-w-screen-xl">
         <Routes>
           <Route path="/" element={<Home />} />
         </Routes>

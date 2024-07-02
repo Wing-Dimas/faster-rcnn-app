@@ -1,0 +1,10 @@
+
+
+.background-grid-line {
+  height: 100%;
+  background-image:
+      linear-gradient(to right, rgb(203 213 225) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(203 213 225) 1px, transparent 1px);
+  background-size: 4.5rem 4.5rem;
+  background-position: center center;
+}

@@ -15,10 +15,9 @@ import { ModeToggle } from "@/components/atomics";
 
 const Navbar: React.FC = () => {
   return (
-    <div className="fixed top-0 w-full py-3 px-4 bg-card/50 border-b backdrop-blur-xl z-50">
-      <div className="max-w-screen-xl mx-auto flex justify-between w-full">
+    <div className="fixed top-0 left-0 right-0  bg-card/50 border-b backdrop-blur-xl z-50">
+      <div className="max-w-screen-xl mx-auto py-3 px-4">
         <NavbarMenu />
-        <ModeToggle />
       </div>
     </div>
   );
@@ -26,7 +25,7 @@ const Navbar: React.FC = () => {
 
 const NavbarMenu: React.FC = () => {
   return (
-    <NavigationMenu>
+    <NavigationMenu className="flex justify-between w-full max-w-full">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
@@ -48,6 +47,11 @@ const NavbarMenu: React.FC = () => {
               About
             </NavLink>
           </NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <ModeToggle />
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
