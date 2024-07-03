@@ -9,10 +9,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { CloudUploadIcon, Loader2 } from "lucide-react";
+import { usePredictImage } from "@/hooks";
 
 export const ImageUploader: React.FC = () => {
   const [preview, setPreview] = React.useState<string | ArrayBuffer | null>("");
   const { toast } = useToast();
+  const { predict } = usePredictImage();
 
   const formSchema = z.object({
     image: z
@@ -33,8 +35,8 @@ export const ImageUploader: React.FC = () => {
     (acceptedFiles: File[]) => {
       const reader = new FileReader();
       try {
-        reader.onload = () => setPreview(reader.result);
         reader.readAsDataURL(acceptedFiles[0]);
+        reader.onload = () => setPreview(reader.result);
         form.setValue("image", acceptedFiles[0]);
         form.clearErrors("image");
       } catch (error) {
@@ -54,6 +56,7 @@ export const ImageUploader: React.FC = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
+    predict(values.image);
     toast({ description: `Image uploaded successfully 🎉 ${values.image.name}` });
   };
 
