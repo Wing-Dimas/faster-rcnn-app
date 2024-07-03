@@ -1,16 +1,10 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
 
 const Result: React.FC = () => {
-    const loading = true
+  const loading = true;
   return (
     <Card>
       <CardHeader>
@@ -18,12 +12,16 @@ const Result: React.FC = () => {
         <CardDescription>This</CardDescription>
       </CardHeader>
       <CardContent>
-        {loading && Array.from({length: 3}, (_, i) => <SkeletonCard key={i} />) }
-
         <div className="flex gap-3 flex-wrap">
-          <ResultItem />
-          <ResultItem />
-          <ResultItem />
+          {loading && Array.from({ length: 3 }, (_, i) => <SkeletonCard key={i} />)}
+
+          {!loading && (
+            <>
+              <ResultItem />
+              <ResultItem />
+              <ResultItem />
+            </>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -44,9 +42,11 @@ const ResultItem: React.FC = () => {
 
 const SkeletonCard = () => {
   return (
-    
-            <Skeleton className="flex-1 rounded-xl" />
-
+    <Card className="min-w-60 flex-1">
+      <AspectRatio ratio={1 / 1}>
+        <Skeleton className="w-full h-full" />
+      </AspectRatio>
+    </Card>
   );
 };
 export default Result;
