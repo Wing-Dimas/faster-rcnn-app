@@ -1,3 +1,4 @@
-import usePredictImage from "./usePredictImage.tsx";
+import usePredictImage from "./usePredictImage";
+import useDrawPrediction from "./useDrawPrediction";
 
-export { usePredictImage };
+export { usePredictImage, useDrawPrediction };

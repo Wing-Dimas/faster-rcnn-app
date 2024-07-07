@@ -1,5 +1,5 @@
 const ENDPOINTS = {
-  PREDICT_IMAGE: () => `/predict`,
+  PREDICT_IMAGE: (model: string) => `/predict?model=${model}`,
 };
 
 export default ENDPOINTS;

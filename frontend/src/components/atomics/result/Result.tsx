@@ -1,40 +1,43 @@
+import React from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import React from "react";
+
+import { imageType, usePredictionImage } from "@/lib/zustand/usePredictionImage";
+import { IDetectionObject } from "@/types/DetectionObject";
+import { useDrawPrediction } from "@/hooks";
 
 const Result: React.FC = () => {
-  const loading = true;
+  const { loading, image } = usePredictionImage();
+
   return (
-    <Card>
+    <Card id="result">
       <CardHeader>
         <CardTitle>Result</CardTitle>
-        <CardDescription>This</CardDescription>
+        <CardDescription>Predict will show on below</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex gap-3 flex-wrap">
-          {loading && Array.from({ length: 3 }, (_, i) => <SkeletonCard key={i} />)}
+        <div className="flex">
+          {loading && <SkeletonCard />}
 
-          {!loading && (
-            <>
-              <ResultItem />
-              <ResultItem />
-              <ResultItem />
-            </>
-          )}
+          {image && <ResultPredict />}
         </div>
       </CardContent>
     </Card>
   );
 };
 
-const ResultItem: React.FC = () => {
+const ResultPredict: React.FC = () => {
+  const { image, detections, loading } = usePredictionImage();
+  const { imageResizedUrl } = useDrawPrediction(image as imageType, detections as IDetectionObject[]);
+
   return (
     <Card className="min-w-60 flex-1">
-      <CardContent>
-        <AspectRatio ratio={1 / 1}>
-          <div className="w-full"></div>
-        </AspectRatio>
+      <CardHeader></CardHeader>
+      <CardContent className="relative">
+        {!loading && imageResizedUrl && (
+          <div className="w-full">{imageResizedUrl && <img src={imageResizedUrl as string} className="mx-auto" />}</div>
+        )}
       </CardContent>
     </Card>
   );
@@ -42,9 +45,13 @@ const ResultItem: React.FC = () => {
 
 const SkeletonCard = () => {
   return (
-    <Card className="min-w-60 flex-1">
-      <AspectRatio ratio={1 / 1}>
+    <Card className="min-w-60 flex-1 relative">
+      <AspectRatio ratio={16 / 9} className="relative">
         <Skeleton className="w-full h-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <h3 className="text-center">Your image is being porcessed</h3>
+          <p className="text-center">please wait a moment...</p>
+        </div>
       </AspectRatio>
     </Card>
   );

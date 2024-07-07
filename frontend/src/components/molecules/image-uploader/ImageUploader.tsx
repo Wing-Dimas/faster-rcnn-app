@@ -1,20 +1,21 @@
 import React from "react";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDropzone } from "react-dropzone";
 import { z } from "zod";
+
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 import { CloudUploadIcon, Loader2 } from "lucide-react";
+
+import { useDropzone } from "react-dropzone";
 import { usePredictImage } from "@/hooks";
 
 export const ImageUploader: React.FC = () => {
   const [preview, setPreview] = React.useState<string | ArrayBuffer | null>("");
-  const { toast } = useToast();
-  const { predict } = usePredictImage();
+  const { predict, loading } = usePredictImage();
 
   const formSchema = z.object({
     image: z
@@ -54,10 +55,9 @@ export const ImageUploader: React.FC = () => {
     accept: { "image/png": [], "image/jpg": [], "image/jpeg": [] },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    predict(values.image);
-    toast({ description: `Image uploaded successfully 🎉 ${values.image.name}` });
+    await predict(values.image);
   };
 
   return (
@@ -110,8 +110,8 @@ export const ImageUploader: React.FC = () => {
             )}
           />
           <CardFooter className="flex justify-end">
-            <Button type="submit" disabled={form.formState.isSubmitting} size="sm" className="gap-2">
-              <Loader2 size={16} className="hidden" />
+            <Button type="submit" disabled={form.formState.isSubmitting || loading} size="sm" className="gap-2">
+              {loading && <Loader2 size={16} className="animate-spin" />}
               Generate
             </Button>
           </CardFooter>
