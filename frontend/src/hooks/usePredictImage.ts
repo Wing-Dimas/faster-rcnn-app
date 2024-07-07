@@ -1,6 +1,5 @@
 import ApiManager from "@/ApiManager/ApiManager";
 import { useToast } from "@/components/ui/use-toast";
-// import { useState } from "react";
 import { DetectionResponseData, IResponseDetection } from "@/types/DetectionObject";
 import { convertResPredict2DetectionObject } from "@/lib/utils";
 import { usePredictionImage } from "@/lib/zustand/usePredictionImage";
@@ -37,10 +36,6 @@ const usePredictImage = () => {
         description: "Server Error",
       });
       setLoading(false);
-    } finally {
-      toast({
-        description: "please wait a moment...",
-      });
     }
   };
 

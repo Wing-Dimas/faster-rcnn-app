@@ -46,15 +46,13 @@ function resizeImage(base64Str: imageType, detectionObjects: IDetectionObject[],
         }
       }
 
-      const scale_x = width / image.width;
-      const scale_y = height / image.height;
-
       if (!ctx) return;
 
+      const scale_x = width / image.width;
+      const scale_y = height / image.height;
       if (shouldResize) {
         canvas.width = width;
         canvas.height = height;
-
         ctx.drawImage(image, 0, 0, width, height);
         drawBoundingBox(ctx, detectionObjects, scale_x, scale_y);
         resolve(canvas.toDataURL("image/jpeg", 0.9));
@@ -85,7 +83,6 @@ const drawBoundingBox = (
 
     ctx.strokeStyle = { spatter: "red", undercut: "cyan" }[label];
     ctx.lineWidth = 5;
-
     ctx.strokeRect(newX, newY, newWidth, newHeight);
   });
 };

@@ -28,8 +28,8 @@ export function convertResPredict2DetectionObject(data: DetectionResponseData): 
     const label = detection[1] as labelType;
     const scores = detection[2] as scoreType;
 
-    const width = box[0] + box[2];
-    const height = box[1] + box[3];
+    const width = box[2] - box[0];
+    const height = box[3] - box[1];
 
     const boundingBox: boundingBoxType = {
       x: box[0],
