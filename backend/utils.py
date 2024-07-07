@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 import torchvision.transforms as T
+import torchvision
 from model import get_model
 import os
 
@@ -9,13 +10,10 @@ dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 name2idx = {'spatter': 1, 'undercut': 2}
 idx2name = {v: k for k, v in name2idx.items() }
 
-mean = [0.485, 0.456, 0.406]
-std = [0.229, 0.224, 0.225]
 transform_norm = T.Compose([
-    T.ToTensor(),
     T.Resize((640,640)),
-    T.Normalize(mean, std)]
-)
+    T.ToTensor(),
+])
 
 np.random.seed(1)
 class_to_color = {name2idx[v]: np.random.randint(0, 255, 3) for v in name2idx}
@@ -42,14 +40,26 @@ def transform_img(img):
 
     return img, (scale_x, scale_y)
 
-def predict_image(model, img, scale):
+def predict_image(model, img, scale, iou_threshold=0.3):
     (scale_x, scale_y) = scale
 
-    pred = model(img)[0]
+    outputs = model(img)[0]
 
-    pred["boxes"] = (pred["boxes"] * torch.tensor([scale_x, scale_y, scale_x, scale_y])).int().tolist()
-    pred["scores"] = (pred["scores"] * 100).int().tolist()
-    pred["labels"] = to_name(pred["labels"].numpy()).tolist()
+
+    boxes = outputs['boxes'].data
+    scores = outputs['scores'].data
+    labels = outputs['labels'].data
+
+    keep = torchvision.ops.nms(boxes, scores, iou_threshold)
+
+    boxes = boxes[keep]
+    scores = scores[keep]
+    labels = labels[keep]
+
+    pred = {}
+    pred["boxes"] = (boxes * torch.tensor([scale_x, scale_y, scale_x, scale_y])).int().tolist()
+    pred["scores"] = (scores * 100).int().tolist()
+    pred["labels"] = to_name(labels.numpy()).tolist()
 
     return pred
 

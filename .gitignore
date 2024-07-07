@@ -1,7 +1,5 @@
+# backend
 .venv
-model
 __pycache__
-
-
-# frontend
-node_modules
+*.pth
+*.onnx
