@@ -56,7 +56,6 @@ export const ImageUploader: React.FC = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     await predict(values.image);
   };
 

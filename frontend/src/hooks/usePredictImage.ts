@@ -24,7 +24,6 @@ const usePredictImage = () => {
 
       const detections = convertResPredict2DetectionObject(data.data as DetectionResponseData);
       setDetections(detections);
-      console.log(detections);
 
       reader.readAsDataURL(img);
       reader.onload = () => setImageDetection(reader.result as string);
