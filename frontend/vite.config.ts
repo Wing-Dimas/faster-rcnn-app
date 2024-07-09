@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd());
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
   return {
     plugins: [react()],
     resolve: {
@@ -13,10 +13,10 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      port: Number(env.VITE_PORT),
+      port: Number(process.env.VITE_PORT || 5173),
       proxy: {
         "/api": {
-          target: env.VITE_API_URL,
+          target: process.env.VITE_API_URL || "http://127.0.0.1:5000",
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
         },
