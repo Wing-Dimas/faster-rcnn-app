@@ -56,6 +56,7 @@ def predict_image(model, img, scale, iou_threshold=0.3):
     scores = scores[keep]
     labels = labels[keep]
 
+    # TODO: return an empty array when no objects are detected
     pred = {}
     pred["boxes"] = (boxes * torch.tensor([scale_x, scale_y, scale_x, scale_y])).int().tolist()
     pred["scores"] = (scores * 100).int().tolist()
