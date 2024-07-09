@@ -28,7 +28,7 @@ const usePredictImage = () => {
       reader.readAsDataURL(img);
       reader.onload = () => setImageDetection(reader.result as string);
 
-      toast({ description: `Image has benn successfully detected 🎉` });
+      toast({ description: `Image has been successfully detected 🎉` });
     } catch (error: unknown) {
       if (error instanceof Error) console.error("Error on usePredictedImage : ", error.message);
       toast({
