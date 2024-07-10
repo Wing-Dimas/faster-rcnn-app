@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/api/:match*", "destination": "https://backend-hmfavc2qha-et.a.run.app/:match*" }]
+}
